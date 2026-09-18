@@ -1,3 +1,11 @@
 <Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+    <File Path="README.md" />
+  </Folder>
   <Project Path="EverybodyCodes.CLI/EverybodyCodes.CLI.csproj" />
+  <Project Path="Libraries/Challenge.Collections/Challenge.Collections.csproj" />
+  <Project Path="Libraries/Challenge.Maths/Challenge.Maths.csproj" />
+  <Project Path="Libraries/Challenge.Solvers/Challenge.Solvers.csproj" />
+  <Project Path="Libraries/Challenge.Utils/Challenge.Utils.csproj" />
 </Solution>
