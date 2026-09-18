@@ -4,6 +4,7 @@
     <File Path="README.md" />
   </Folder>
   <Project Path="EverybodyCodes.CLI/EverybodyCodes.CLI.csproj" />
+  <Project Path="EverybodyCodes/EverybodyCodes.csproj" />
   <Project Path="Libraries/Challenge.Collections/Challenge.Collections.csproj" />
   <Project Path="Libraries/Challenge.Maths/Challenge.Maths.csproj" />
   <Project Path="Libraries/Challenge.Solvers/Challenge.Solvers.csproj" />
