@@ -10,13 +10,18 @@ namespace EverybodyCodes.Resolver;
 /// </summary>
 /// <param name="logger">Logger instance</param>
 /// <param name="settings">Resolver settings</param>
-public sealed class SolverResolver(ILogger<SolverResolver> logger, ResolverSettings settings) : SolverResolverBase(logger, settings)
+public sealed class SolverResolver(ILogger<SolverResolver> logger, EverybodyCodesResolverSettings settings) : SolverResolverBase(logger, settings)
 {
     /// <inheritdoc />
     public override string ChallengeName => "Everybody Codes";
 
     /// <inheritdoc />
     protected override TimeSpan RateLimit { get; } = TimeSpan.FromSeconds(60);
+
+    /// <summary>
+    /// Resolver settings
+    /// </summary>
+    private new EverybodyCodesResolverSettings Settings { get; } = settings;
 
     /// <inheritdoc />
     public override async Task<Result> SubmitAnswer(string answer, CancellationToken token = default)
