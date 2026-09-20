@@ -2,9 +2,11 @@
 using System.Text.Json;
 using Challenge.CLI;
 using Challenge.Utils.Extensions.Assemblies;
+using Challenge.Utils.Extensions.Collections;
 using DotMake.CommandLine;
 using EverybodyCodes.Resolver;
 using EverybodyCodes.Resolver.Models;
+using EverybodyCodes.Resolver.Models.Converters;
 using Microsoft.Extensions.DependencyInjection;
 using Refit;
 using Serilog;
@@ -83,8 +85,11 @@ Cli.Ext.ConfigureServices(services =>
             .AddLogging(builder => builder.AddSerilog(Log.Logger, true));
 
     // Create refit settings
-    JsonSerializerOptions options = SystemTextJsonContentSerializer.GetFastPathJsonSerializerOptions();
+    JsonSerializerOptions options = SystemTextJsonContentSerializer.GetDefaultJsonSerializerOptions();
     options.TypeInfoResolver = ModelsContext.Default;
+    options.Converters.AddRange(new EmptyUriConverter(),
+                                new NumericalBoolConverter(),
+                                new UnixTimeMillisecondsConverter());
     RefitSettings refitSettings = new(new SystemTextJsonContentSerializer(options));
 
     // Add HTTP Clients
@@ -92,7 +97,7 @@ Cli.Ext.ConfigureServices(services =>
             .ConfigureHttpClient(client =>
              {
                  // Create client
-                 client.BaseAddress = new Uri("https://everybody.codes");
+                 client.BaseAddress = new Uri("https://api.everybody.codes");
 
                  // Add cookie header
                  client.DefaultRequestHeaders.Add("cookie", "everybody-codes=" + settings.Cookie);

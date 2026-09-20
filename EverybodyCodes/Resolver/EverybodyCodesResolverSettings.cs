@@ -15,6 +15,13 @@ public sealed partial class EverybodyCodesResolverSettingsJsonContext : JsonSeri
 /// </summary>
 /// <param name="Cookie">Request cookie</param>
 /// <param name="LastRequestTimestamp">Last request timestamp</param>
+/// <param name="Seed">Challenge seed</param>
 [PublicAPI]
 [method: JsonConstructor]
-public sealed record EverybodyCodesResolverSettings(string Cookie, long LastRequestTimestamp, int? Seed) : ResolverSettings(Cookie, LastRequestTimestamp);
+public sealed record EverybodyCodesResolverSettings(string Cookie, long LastRequestTimestamp, int? Seed) : ResolverSettings(Cookie, LastRequestTimestamp)
+{
+    /// <summary>
+    /// Challenge seed
+    /// </summary>
+    public int? Seed { get; set; } = Seed;
+}

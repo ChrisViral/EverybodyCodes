@@ -1,6 +1,8 @@
-﻿using Challenge.CLI;
+﻿using System.Text.Json.Serialization.Metadata;
+using Challenge.CLI;
 using Challenge.Solvers;
 using CSharpFunctionalExtensions;
+using EverybodyCodes.Resolver.Models;
 using Microsoft.Extensions.Logging;
 
 namespace EverybodyCodes.Resolver;
@@ -10,18 +12,22 @@ namespace EverybodyCodes.Resolver;
 /// </summary>
 /// <param name="logger">Logger instance</param>
 /// <param name="settings">Resolver settings</param>
-public sealed class SolverResolver(ILogger<SolverResolver> logger, EverybodyCodesResolverSettings settings) : SolverResolverBase(logger, settings)
+public sealed class SolverResolver(ILogger<SolverResolver> logger, EverybodyCodesResolverSettings settings, IEverybodyCodesAPI api)
+    : SolverResolverBase<EverybodyCodesResolverSettings>(logger, settings)
 {
     /// <inheritdoc />
     public override string ChallengeName => "Everybody Codes";
 
     /// <inheritdoc />
-    protected override TimeSpan RateLimit { get; } = TimeSpan.FromSeconds(60);
+    protected override TimeSpan RateLimit { get; } = TimeSpan.FromSeconds(60L);
+
+    /// <inheritdoc />
+    protected override JsonTypeInfo<EverybodyCodesResolverSettings> SettingsTypeInfo => EverybodyCodesResolverSettingsJsonContext.Default.EverybodyCodesResolverSettings;
 
     /// <summary>
-    /// Resolver settings
+    /// Everybody Codes API
     /// </summary>
-    private new EverybodyCodesResolverSettings Settings { get; } = settings;
+    private IEverybodyCodesAPI API { get; } = api;
 
     /// <inheritdoc />
     public override async Task<Result> SubmitAnswer(string answer, CancellationToken token = default)
@@ -41,6 +47,12 @@ public sealed class SolverResolver(ILogger<SolverResolver> logger, EverybodyCode
     /// <inheritdoc />
     protected override async Task<string> GetInputFromWebsite(SolverData data, CancellationToken token)
     {
+        if (this.Settings.Seed is null)
+        {
+            User user = await this.API.GetUser(token);
+            this.Settings.Seed = user.Seed;
+            await SaveSettings(token);
+        }
         return string.Empty;
     }
 }

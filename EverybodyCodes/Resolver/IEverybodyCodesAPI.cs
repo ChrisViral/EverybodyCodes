@@ -13,6 +13,6 @@ public interface IEverybodyCodesAPI
     /// </summary>
     /// <param name="token">Cancellation token</param>
     /// <returns>The authenticated user data</returns>
-    [Get("/api/user/me")]
+    [Get("/user/me")]
     Task<User> GetUser(CancellationToken token = default);
 }
