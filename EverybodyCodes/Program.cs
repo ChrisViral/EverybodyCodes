@@ -88,6 +88,7 @@ Cli.Ext.ConfigureServices(services =>
     JsonSerializerOptions options = SystemTextJsonContentSerializer.GetDefaultJsonSerializerOptions();
     options.TypeInfoResolver = ModelsContext.Default;
     options.Converters.AddRange(new EmptyUriConverter(),
+                                new DefaultBoolConverter(),
                                 new NumericalBoolConverter(),
                                 new UnixTimeMillisecondsConverter());
     RefitSettings refitSettings = new(new SystemTextJsonContentSerializer(options));

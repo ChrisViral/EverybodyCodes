@@ -6,7 +6,7 @@ namespace EverybodyCodes.Resolver.Models.Converters;
 /// <summary>
 /// Milliseconds to <see cref="TimeSpan"/> converter
 /// </summary>
-public sealed class TimeMillisecondsConverter : JsonConverter<TimeSpan>
+internal sealed class TimeMillisecondsConverter : JsonConverter<TimeSpan>
 {
     /// <inheritdoc />
     public override TimeSpan Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)

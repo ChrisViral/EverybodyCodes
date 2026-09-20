@@ -39,14 +39,21 @@ public sealed class SolverResolver(ILogger<SolverResolver> logger, EverybodyCode
 
         // Post answer
         AnswerRequest request = new() { Answer = answer };
-        AnswerResponse response = await this.API.PostAnswer(request, data.Year, data.Day, data.Part.Value, token);
-        return response.Correct
-                   ? Result.Success()
-                   : Result.Failure($"""
-                                     First character correct: {(response.FirstCorrect ? "yes" : "no")}
-                                     Length correct: {(response.LengthCorrect ? "yes" : "no")}
-                                     Cannot answer again for {response.PenaltyLeft.TotalSeconds:F0} seconds
-                                     """);
+        try
+        {
+            AnswerResponse response = await this.API.PostAnswer(request, data.Year, data.Day, data.Part.Value, token);
+            return response.Correct
+                       ? Result.Success()
+                       : Result.Failure($"""
+                                         First character correct: {(response.FirstCorrect ? "yes" : "no")}
+                                         Length correct: {(response.LengthCorrect ? "yes" : "no")}
+                                         Cannot answer again for {response.PenaltyLeft.TotalSeconds:F0} seconds
+                                         """);
+        }
+        catch (Exception e)
+        {
+            return Result.Failure($"[{e.GetType().FullName}]: {e.Message}");
+        }
     }
 
     /// <inheritdoc />

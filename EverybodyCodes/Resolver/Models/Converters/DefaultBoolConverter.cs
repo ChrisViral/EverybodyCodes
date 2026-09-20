@@ -4,21 +4,19 @@ using System.Text.Json.Serialization;
 namespace EverybodyCodes.Resolver.Models.Converters;
 
 /// <summary>
-/// Numerical value (0/1) to <see cref="bool"/> converter
+/// Default boolean value converter
 /// </summary>
-internal sealed class NumericalBoolConverter : JsonConverter<bool>
+internal sealed class DefaultBoolConverter : JsonConverter<bool>
 {
     /// <inheritdoc />
     public override bool Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
-        if (reader.TokenType is not JsonTokenType.Number) throw new JsonException("Expected numerical value");
-
-        int value = reader.GetInt32();
-        return value switch
+        // ReSharper disable once SwitchExpressionHandlesSomeKnownEnumValuesWithExceptionInDefault
+        return reader.TokenType switch
         {
-            0 => false,
-            1 => true,
-            _ => throw new JsonException($"Invalid boolean numerical {value}")
+            JsonTokenType.True  => true,
+            JsonTokenType.False => false,
+            _                   => throw new JsonException("Excepected boolean value")
         };
     }
 
