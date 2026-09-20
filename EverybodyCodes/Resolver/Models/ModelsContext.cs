@@ -7,6 +7,7 @@ namespace EverybodyCodes.Resolver.Models;
 /// Global source generated json serialization context
 /// </summary>
 [JsonSerializable(typeof(User))]
+[JsonSerializable(typeof(Quest))]
 [JsonSerializable(typeof(ImmutableDictionary<int, string>))]
 [JsonSourceGenerationOptions(GenerationMode = JsonSourceGenerationMode.Metadata, PropertyNamingPolicy = JsonKnownNamingPolicy.SnakeCaseLower)]
 internal sealed partial class ModelsContext : JsonSerializerContext;

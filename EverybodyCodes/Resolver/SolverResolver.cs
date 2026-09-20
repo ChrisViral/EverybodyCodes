@@ -57,6 +57,7 @@ public sealed class SolverResolver(ILogger<SolverResolver> logger, EverybodyCode
 
         int seed = await GetSeed(token);
         ImmutableDictionary<int, string> inputs = await this.API.GetInputs($"https://everybody.codes/assets/{data.Year}/{data.Day}/input/{seed}.json");
+        Quest quest = await this.API.GetQuest(data.Year, data.Day, token);
         throw new NotImplementedException();
     }
 
