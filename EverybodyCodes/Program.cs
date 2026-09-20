@@ -2,14 +2,13 @@ using System.Reflection;
 using System.Text.Json;
 using Challenge.CLI;
 using Challenge.Utils.Extensions.Assemblies;
-using Challenge.Utils.Extensions.Collections;
 using DotMake.CommandLine;
 using EverybodyCodes.Resolver;
 using EverybodyCodes.Resolver.Models;
-using EverybodyCodes.Resolver.Models.Converters;
 using Microsoft.Extensions.DependencyInjection;
 using Refit;
 using Serilog;
+using Serilog.Events;
 
 Console.Title = "Everybody Codes";
 
@@ -33,6 +32,13 @@ LoggerConfiguration configuration = new();
 Log.Logger = configuration.WriteTo.Console()
                           .WriteTo.File(results)
                           .Enrich.FromLogContext()
+#if DEBUG
+                          .MinimumLevel.Debug()
+                          .MinimumLevel.Override(typeof(HttpClient).FullName!, LogEventLevel.Information)
+#else
+                          .MinimumLevel.Information()
+                          .MinimumLevel.Override(typeof(HttpClient).FullName!, LogEventLevel.Warning)
+#endif
                           .CreateLogger();
 
 // Ensure input directory exists
@@ -61,7 +67,7 @@ if (!settingsFile.Exists)
 }
 
 // Get settings
-EverybodyCodesResolverSettings? settings;
+ResolverSettings? settings;
 await using (FileStream settingsReadFileStream = settingsFile.OpenRead())
 {
     settings = await JsonSerializer.DeserializeAsync(settingsReadFileStream,
@@ -87,10 +93,6 @@ Cli.Ext.ConfigureServices(services =>
     // Create refit settings
     JsonSerializerOptions options = SystemTextJsonContentSerializer.GetDefaultJsonSerializerOptions();
     options.TypeInfoResolver = ModelsContext.Default;
-    options.Converters.AddRange(new EmptyUriConverter(),
-                                new DefaultBoolConverter(),
-                                new NumericalBoolConverter(),
-                                new UnixTimeMillisecondsConverter());
     RefitSettings refitSettings = new(new SystemTextJsonContentSerializer(options));
 
     // Setup user agent value
