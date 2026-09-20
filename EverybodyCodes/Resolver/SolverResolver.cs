@@ -32,28 +32,43 @@ public sealed class SolverResolver(ILogger<SolverResolver> logger, EverybodyCode
     private IEverybodyCodesAPI API { get; } = api;
 
     /// <inheritdoc />
-    public override async Task<Result> SubmitAnswer(string answer, CancellationToken token = default)
+    /// <exception cref="InvalidOperationException">If the <paramref name="data"/> does not have a valid value for the <see cref="SolverData.Part"/></exception>
+    public override async Task<Result> SubmitAnswer(string answer, SolverData data, CancellationToken token = default)
     {
-        return default;
+        if (!data.Part.HasValue) throw new InvalidOperationException("Part required to post answer");
+
+        // Post answer
+        AnswerRequest request = new() { Answer = answer };
+        AnswerResponse response = await this.API.PostAnswer(request, data.Year, data.Day, data.Part.Value, token);
+        return response.Correct
+                   ? Result.Success()
+                   : Result.Failure($"""
+                                     First character correct: {(response.FirstCorrect ? "yes" : "no")}
+                                     Length correct: {(response.LengthCorrect ? "yes" : "no")}
+                                     Cannot answer again for {response.PenaltyLeft.TotalSeconds:F0} seconds
+                                     """);
     }
 
     /// <inheritdoc />
+    /// <exception cref="InvalidOperationException">If the <paramref name="data"/> does not have a valid value for the <see cref="SolverData.Part"/></exception>
     protected override string GetInputFileName(in SolverData data)
     {
-        string day = data.Part.HasValue ? $"day{data.Day:D2}_{data.Part:D2}.txt" : $"day{data.Day:D2}.txt";
+        if (!data.Part.HasValue) throw new InvalidOperationException("Part required to post answer");
+
         return string.IsNullOrEmpty(data.Module)
-                   ? Path.Combine(INPUT_FOLDER, data.Year.ToString(), day)
-                   : Path.Combine(INPUT_FOLDER, data.Module, data.Year.ToString(), day);
+                   ? Path.Combine(INPUT_FOLDER, data.Year.ToString(), $"day{data.Day:D2}_{data.Part:D2}.txt")
+                   : Path.Combine(INPUT_FOLDER, data.Module, data.Year.ToString(), $"day{data.Day:D2}_{data.Part:D2}.txt");
     }
 
     /// <inheritdoc />
+    /// <exception cref="InvalidOperationException">If the <paramref name="data"/> does not have a valid value for the <see cref="SolverData.Part"/></exception>
     protected override async Task<string> GetInputFromAPI(SolverData data, CancellationToken token)
     {
         if (!data.Part.HasValue) throw new InvalidOperationException("Part required to get input from API");
 
         // Get seed and inputs
         int seed = await GetSeed(token);
-        Inputs inputs = await this.API.GetInputs($"https://everybody.codes/assets/{data.Year}/{data.Day}/input/{seed}.json");
+        Inputs inputs = await this.API.GetInputs($"https://everybody.codes/assets/{data.Year}/{data.Day}/input/{seed}.json", token);
         string input = inputs.GetInput(data.Part.Value);
 
         // Get quest data and decryption key
@@ -96,16 +111,15 @@ public sealed class SolverResolver(ILogger<SolverResolver> logger, EverybodyCode
         Span<byte> decryptedBytes = stackalloc byte[encryptedLength];
         Convert.FromHexString(encrypted, encryptedBytes, out _, out _);
 
-        // Get key and IV bytes
+        // Get key bytes
         int keyLength = Encoding.UTF8.GetByteCount(key);
         Span<byte> keyBytes = stackalloc byte[keyLength];
-        Span<byte> ivBytes = keyBytes[..16];
         Encoding.UTF8.TryGetBytes(key, keyBytes, out _);
 
         // Decrypt
         using Aes aes = Aes.Create();
         aes.SetKey(keyBytes);
-        aes.TryDecryptCbc(encryptedBytes, ivBytes, decryptedBytes, out int written);
+        aes.TryDecryptCbc(encryptedBytes, keyBytes[..16], decryptedBytes, out int written);
         return Encoding.UTF8.GetString(decryptedBytes[..written]);
     }
 }
