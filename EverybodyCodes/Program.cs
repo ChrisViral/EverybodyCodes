@@ -67,7 +67,7 @@ if (!settingsFile.Exists)
 }
 
 // Get settings
-ResolverSettings? settings;
+EverybodyCodesResolverSettings? settings;
 await using (FileStream settingsReadFileStream = settingsFile.OpenRead())
 {
     settings = await JsonSerializer.DeserializeAsync(settingsReadFileStream,

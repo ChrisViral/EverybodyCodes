@@ -6,6 +6,7 @@ using Challenge.Solvers;
 using CSharpFunctionalExtensions;
 using EverybodyCodes.Resolver.Models;
 using Microsoft.Extensions.Logging;
+using Refit;
 
 namespace EverybodyCodes.Resolver;
 
@@ -21,7 +22,7 @@ public sealed class SolverResolver(ILogger<SolverResolver> logger, EverybodyCode
     public override string ChallengeName => "Everybody Codes";
 
     /// <inheritdoc />
-    protected override TimeSpan RateLimit { get; } = TimeSpan.FromSeconds(60L);
+    protected override TimeSpan RateLimit => TimeSpan.Zero;
 
     /// <inheritdoc />
     protected override JsonTypeInfo<EverybodyCodesResolverSettings> SettingsTypeInfo => EverybodyCodesResolverSettingsJsonContext.Default.EverybodyCodesResolverSettings;
@@ -55,9 +56,11 @@ public sealed class SolverResolver(ILogger<SolverResolver> logger, EverybodyCode
                                          Cannot answer again for {response.PenaltyLeft.TotalSeconds:F0} seconds
                                          """);
         }
-        catch (Exception e)
+        catch (ApiException e)
         {
-            return Result.Failure($"[{e.GetType().FullName}]: {e.Message}");
+            Error? error = await e.GetContentAsAsync<Error>().ConfigureAwait(false);
+            if (error is null) return Result.Failure($"[{e.GetType().FullName}]: {e.Message}");
+            return error.Message is "already solved" ? Result.Success() : Result.Failure(error.Message);
         }
     }
 

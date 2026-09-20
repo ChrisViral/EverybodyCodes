@@ -10,5 +10,6 @@ namespace EverybodyCodes.Resolver.Models;
 [JsonSerializable(typeof(Inputs))]
 [JsonSerializable(typeof(AnswerRequest))]
 [JsonSerializable(typeof(AnswerResponse))]
+[JsonSerializable(typeof(Error))]
 [JsonSourceGenerationOptions(GenerationMode = JsonSourceGenerationMode.Metadata, PropertyNamingPolicy = JsonKnownNamingPolicy.SnakeCaseLower)]
 internal sealed partial class ModelsContext : JsonSerializerContext;

@@ -36,9 +36,4 @@ public class AnswerResponse
     /// </summary>
     [JsonPropertyName("penaltyLeftMs"), JsonConverter(typeof(TimeMillisecondsConverter))]
     public TimeSpan PenaltyLeft { get; init; }
-
-    /// <summary>
-    /// Message
-    /// </summary>
-    public string? Message { get; set; }
 }
