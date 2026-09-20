@@ -1,5 +1,4 @@
-﻿using System.Collections.Immutable;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace EverybodyCodes.Resolver.Models;
 
@@ -8,6 +7,6 @@ namespace EverybodyCodes.Resolver.Models;
 /// </summary>
 [JsonSerializable(typeof(User))]
 [JsonSerializable(typeof(Quest))]
-[JsonSerializable(typeof(ImmutableDictionary<int, string>))]
+[JsonSerializable(typeof(Inputs))]
 [JsonSourceGenerationOptions(GenerationMode = JsonSourceGenerationMode.Metadata, PropertyNamingPolicy = JsonKnownNamingPolicy.SnakeCaseLower)]
 internal sealed partial class ModelsContext : JsonSerializerContext;

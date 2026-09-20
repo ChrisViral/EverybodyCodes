@@ -1,5 +1,4 @@
-﻿using System.Collections.Immutable;
-using EverybodyCodes.Resolver.Models;
+﻿using EverybodyCodes.Resolver.Models;
 using Refit;
 
 namespace EverybodyCodes.Resolver;
@@ -23,7 +22,7 @@ public interface IEverybodyCodesAPI
     /// <param name="url">Input fetch absolute URL</param>
     /// <returns>A dictionary containing the input keyed by part</returns>
     [Get("")]
-    Task<ImmutableDictionary<int, string>> GetInputs([Url] string url);
+    Task<Inputs> GetInputs([Url] string url);
 
     /// <summary>
     /// Gets the <see cref="Quest"/> API object for a current year/day
