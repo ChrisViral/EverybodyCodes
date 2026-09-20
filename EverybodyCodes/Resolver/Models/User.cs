@@ -78,7 +78,7 @@ public class User
     /// <summary>
     /// Challenges seed
     /// </summary>
-    public int Seed { get; init; }
+    public uint Seed { get; init; }
 
     /// <summary>
     /// Steam URL

@@ -1,4 +1,4 @@
-﻿using System.Reflection;
+using System.Reflection;
 using System.Text.Json;
 using Challenge.CLI;
 using Challenge.Utils.Extensions.Assemblies;
@@ -93,20 +93,28 @@ Cli.Ext.ConfigureServices(services =>
                                 new UnixTimeMillisecondsConverter());
     RefitSettings refitSettings = new(new SystemTextJsonContentSerializer(options));
 
-    // Add HTTP Clients
+    // Setup user agent value
+    Version fileVersion = Assembly.GetExecutingAssembly().GetFileVersion;
+    string userAgent = $"ChrisViral.{typeof(SolverResolver).FullName}/{fileVersion.ToString(2)} (https://github.com/ChrisViral/EverybodyCodes)";
+
+    // Add normal API client
     services.AddRefitClient<IEverybodyCodesAPI>(refitSettings)
             .ConfigureHttpClient(client =>
              {
-                 // Create client
+                 // Set address and headers
                  client.BaseAddress = new Uri("https://api.everybody.codes");
+                 client.DefaultRequestHeaders.Add("cookie", $"everybody-codes={settings.Cookie}");
+                 client.DefaultRequestHeaders.UserAgent.ParseAdd(userAgent);
+             });
 
-                 // Add cookie header
-                 client.DefaultRequestHeaders.Add("cookie", "everybody-codes=" + settings.Cookie);
-
-                 // Add User-Agent header
-                 Version fileVersion = Assembly.GetExecutingAssembly().GetFileVersion;
-                 string userAgentValue = $"ChrisViral.{typeof(SolverResolver).FullName}/{fileVersion.ToString(2)} (https://github.com/ChrisViral/EverybodyCodes)";
-                 client.DefaultRequestHeaders.UserAgent.ParseAdd(userAgentValue);
+    // Add input API client
+    services.AddRefitClient<IEverybodyCodesInputAPI>(refitSettings)
+            .ConfigureHttpClient(client =>
+             {
+                 // Set address and headers
+                 client.BaseAddress = new Uri("https://everybody.codes");
+                 client.DefaultRequestHeaders.Add("cookie", $"everybody-codes={settings.Cookie}");
+                 client.DefaultRequestHeaders.UserAgent.ParseAdd(userAgent);
              });
 });
 

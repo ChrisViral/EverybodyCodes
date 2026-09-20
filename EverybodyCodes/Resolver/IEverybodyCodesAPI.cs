@@ -17,15 +17,6 @@ public interface IEverybodyCodesAPI
     Task<User> GetUser(CancellationToken token = default);
 
     /// <summary>
-    /// Gets the input data for a given challenge
-    /// </summary>
-    /// <param name="url">Input fetch absolute URL</param>
-    /// <param name="token">Cancellation token</param>
-    /// <returns>A dictionary containing the input keyed by part</returns>
-    [Get("")]
-    Task<Inputs> GetInputs([Url] string url, CancellationToken token = default);
-
-    /// <summary>
     /// Gets the <see cref="Quest"/> API object for a current year and day
     /// </summary>
     /// <param name="year">Quest year</param>

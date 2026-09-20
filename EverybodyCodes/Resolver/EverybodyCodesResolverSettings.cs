@@ -18,10 +18,10 @@ public sealed partial class EverybodyCodesResolverSettingsJsonContext : JsonSeri
 /// <param name="Seed">Challenge seed</param>
 [PublicAPI]
 [method: JsonConstructor]
-public sealed record EverybodyCodesResolverSettings(string Cookie, long LastRequestTimestamp, int? Seed) : ResolverSettings(Cookie, LastRequestTimestamp)
+public sealed record EverybodyCodesResolverSettings(string Cookie, long LastRequestTimestamp, uint? Seed) : ResolverSettings(Cookie, LastRequestTimestamp)
 {
     /// <summary>
     /// Challenge seed
     /// </summary>
-    public int? Seed { get; set; } = Seed;
+    public uint? Seed { get; set; } = Seed;
 }

@@ -14,7 +14,7 @@ namespace EverybodyCodes.Resolver;
 /// </summary>
 /// <param name="logger">Logger instance</param>
 /// <param name="settings">Resolver settings</param>
-public sealed class SolverResolver(ILogger<SolverResolver> logger, EverybodyCodesResolverSettings settings, IEverybodyCodesAPI api)
+public sealed class SolverResolver(ILogger<SolverResolver> logger, EverybodyCodesResolverSettings settings, IEverybodyCodesAPI api, IEverybodyCodesInputAPI inputAPI)
     : SolverResolverBase<EverybodyCodesResolverSettings>(logger, settings)
 {
     /// <inheritdoc />
@@ -31,16 +31,21 @@ public sealed class SolverResolver(ILogger<SolverResolver> logger, EverybodyCode
     /// </summary>
     private IEverybodyCodesAPI API { get; } = api;
 
+    /// <summary>
+    /// Everybody Codes input API
+    /// </summary>
+    private IEverybodyCodesInputAPI InputAPI { get; } = inputAPI;
+
     /// <inheritdoc />
     /// <exception cref="InvalidOperationException">If the <paramref name="data"/> does not have a valid value for the <see cref="SolverData.Part"/></exception>
     public override async Task<Result> SubmitAnswer(string answer, SolverData data, CancellationToken token = default)
     {
         if (!data.Part.HasValue) throw new InvalidOperationException("Part required to post answer");
 
-        // Post answer
-        AnswerRequest request = new() { Answer = answer };
         try
         {
+            // Post answer
+            AnswerRequest request = new() { Answer = answer };
             AnswerResponse response = await this.API.PostAnswer(request, data.Year, data.Day, data.Part.Value, token);
             return response.Correct
                        ? Result.Success()
@@ -74,8 +79,8 @@ public sealed class SolverResolver(ILogger<SolverResolver> logger, EverybodyCode
         if (!data.Part.HasValue) throw new InvalidOperationException("Part required to get input from API");
 
         // Get seed and inputs
-        int seed = await GetSeed(token);
-        Inputs inputs = await this.API.GetInputs($"https://everybody.codes/assets/{data.Year}/{data.Day}/input/{seed}.json", token);
+        uint seed = await GetSeed(token);
+        Inputs inputs = await this.InputAPI.GetInputs(data.Year, data.Day, seed, token);
         string input = inputs.GetInput(data.Part.Value);
 
         // Get quest data and decryption key
@@ -93,7 +98,7 @@ public sealed class SolverResolver(ILogger<SolverResolver> logger, EverybodyCode
     /// </summary>
     /// <param name="token">Cancellation token</param>
     /// <returns>The current seed for the user</returns>
-    private async ValueTask<int> GetSeed(CancellationToken token)
+    private async ValueTask<uint> GetSeed(CancellationToken token)
     {
         if (this.Settings.Seed.HasValue) return this.Settings.Seed.Value;
 
