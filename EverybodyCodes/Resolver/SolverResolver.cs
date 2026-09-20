@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization.Metadata;
+﻿using System.Collections.Immutable;
+using System.Text.Json.Serialization.Metadata;
 using Challenge.CLI;
 using Challenge.Solvers;
 using CSharpFunctionalExtensions;
@@ -53,6 +54,19 @@ public sealed class SolverResolver(ILogger<SolverResolver> logger, EverybodyCode
             this.Settings.Seed = user.Seed;
             await SaveSettings(token);
         }
-        return string.Empty;
+
+        int seed = await GetSeed(token);
+        ImmutableDictionary<int, string> inputs = await this.API.GetInputs($"https://everybody.codes/assets/{data.Year}/{data.Day}/input/{seed}.json");
+        throw new NotImplementedException();
+    }
+
+    private async ValueTask<int> GetSeed(CancellationToken token)
+    {
+        if (this.Settings.Seed.HasValue) return this.Settings.Seed.Value;
+
+        User user = await this.API.GetUser(token);
+        this.Settings.Seed = user.Seed;
+        await SaveSettings(token);
+        return user.Seed;
     }
 }
