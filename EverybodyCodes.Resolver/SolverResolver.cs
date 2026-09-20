@@ -5,6 +5,7 @@ using Challenge.CLI;
 using Challenge.Solvers;
 using CSharpFunctionalExtensions;
 using EverybodyCodes.Resolver.Models;
+using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
 using Refit;
 
@@ -15,6 +16,9 @@ namespace EverybodyCodes.Resolver;
 /// </summary>
 /// <param name="logger">Logger instance</param>
 /// <param name="settings">Resolver settings</param>
+/// <param name="api">Everybody Codes API</param>
+/// <param name="inputAPI">REverybody Codes Input API</param>
+[PublicAPI]
 public sealed class SolverResolver(ILogger<SolverResolver> logger, EverybodyCodesResolverSettings settings, IEverybodyCodesAPI api, IEverybodyCodesInputAPI inputAPI)
     : SolverResolverBase<EverybodyCodesResolverSettings>(logger, settings)
 {
@@ -38,16 +42,15 @@ public sealed class SolverResolver(ILogger<SolverResolver> logger, EverybodyCode
     private IEverybodyCodesInputAPI InputAPI { get; } = inputAPI;
 
     /// <inheritdoc />
-    /// <exception cref="InvalidOperationException">If the <paramref name="data"/> does not have a valid value for the <see cref="SolverData.Part"/></exception>
     public override async Task<Result> SubmitAnswer(string answer, SolverData data, CancellationToken token = default)
     {
-        if (!data.Part.HasValue) throw new InvalidOperationException("Part required to post answer");
+        if (!data.Part.HasValue) return Result.Failure($"[{nameof(InvalidOperationException)}]: Part required to post answer");
 
         try
         {
             // Post answer
             AnswerRequest request = new() { Answer = answer };
-            AnswerResponse response = await this.API.PostAnswer(request, data.Year, data.Day, data.Part.Value, token);
+            AnswerResponse response = await this.API.PostAnswer(request, data.Year, data.Day, data.Part.Value, token).ConfigureAwait(false);
             return response.Correct
                        ? Result.Success()
                        : Result.Failure($"""
@@ -59,8 +62,12 @@ public sealed class SolverResolver(ILogger<SolverResolver> logger, EverybodyCode
         catch (ApiException e)
         {
             Error? error = await e.GetContentAsAsync<Error>().ConfigureAwait(false);
-            if (error is null) return Result.Failure($"[{e.GetType().FullName}]: {e.Message}");
+            if (error is null) return Result.Failure($"[{nameof(ApiException)}]: {e.Message}");
             return error.Message is "already solved" ? Result.Success() : Result.Failure(error.Message);
+        }
+        catch (Exception e)
+        {
+            return Result.Failure($"[{e.GetType().Name}]: {e.Message}");
         }
     }
 
@@ -82,12 +89,12 @@ public sealed class SolverResolver(ILogger<SolverResolver> logger, EverybodyCode
         if (!data.Part.HasValue) throw new InvalidOperationException("Part required to get input from API");
 
         // Get seed and inputs
-        uint seed = await GetSeed(token);
-        Inputs inputs = await this.InputAPI.GetInputs(data.Year, data.Day, seed, token);
+        uint seed = await GetSeed(token).ConfigureAwait(false);
+        Inputs inputs = await this.InputAPI.GetInputs(data.Year, data.Day, seed, token).ConfigureAwait(false);
         string input = inputs.GetInput(data.Part.Value);
 
         // Get quest data and decryption key
-        Quest quest = await this.API.GetQuest(data.Year, data.Day, token);
+        Quest quest = await this.API.GetQuest(data.Year, data.Day, token).ConfigureAwait(false);
         string? key = quest.GetKey(data.Part.Value);
 
         // Decrypt part input
@@ -106,9 +113,9 @@ public sealed class SolverResolver(ILogger<SolverResolver> logger, EverybodyCode
         if (this.Settings.Seed.HasValue) return this.Settings.Seed.Value;
 
         // Get seed value and save to settings
-        User user = await this.API.GetUser(token);
+        User user = await this.API.GetUser(token).ConfigureAwait(false);
         this.Settings.Seed = user.Seed;
-        await SaveSettings(token);
+        await SaveSettings(token).ConfigureAwait(false);
         return user.Seed;
     }
 

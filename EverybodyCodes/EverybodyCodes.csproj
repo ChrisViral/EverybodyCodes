@@ -26,10 +26,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="EverybodyCodes.csproj.DotSettings" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="JetBrains.Annotations" Version="2026.2.0" />
     <PackageReference Include="JetBrains.ExternalAnnotations" Version="10.2.170" />
     <PackageReference Include="Refit" Version="16.0.0" />
@@ -42,7 +38,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\EverybodyCodes.Resolver\EverybodyCodes.Resolver.csproj" />
     <ProjectReference Include="..\Libraries\Challenge.CLI\Challenge.CLI.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="EverybodyCodes.csproj.DotSettings" />
   </ItemGroup>
 
 </Project>

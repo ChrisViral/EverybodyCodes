@@ -6,6 +6,7 @@
     <File Path=".editorconfig" />
     <File Path="README.md" />
   </Folder>
+  <Project Path="EverybodyCodes.Resolver/EverybodyCodes.Resolver.csproj" />
   <Project Path="EverybodyCodes/EverybodyCodes.csproj">
     <Platform Project="x64" />
   </Project>

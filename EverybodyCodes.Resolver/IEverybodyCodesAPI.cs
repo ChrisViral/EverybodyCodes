@@ -1,4 +1,5 @@
 ﻿using EverybodyCodes.Resolver.Models;
+using JetBrains.Annotations;
 using Refit;
 
 namespace EverybodyCodes.Resolver;
@@ -6,6 +7,7 @@ namespace EverybodyCodes.Resolver;
 /// <summary>
 /// Everybody Codes API
 /// </summary>
+[PublicAPI]
 public interface IEverybodyCodesAPI
 {
     /// <summary>

@@ -1,4 +1,5 @@
 ﻿using System.Text.Json.Serialization;
+using JetBrains.Annotations;
 
 namespace EverybodyCodes.Resolver.Models;
 
@@ -11,5 +12,5 @@ namespace EverybodyCodes.Resolver.Models;
 [JsonSerializable(typeof(AnswerRequest))]
 [JsonSerializable(typeof(AnswerResponse))]
 [JsonSerializable(typeof(Error))]
-[JsonSourceGenerationOptions(GenerationMode = JsonSourceGenerationMode.Metadata, PropertyNamingPolicy = JsonKnownNamingPolicy.SnakeCaseLower)]
-internal sealed partial class ModelsContext : JsonSerializerContext;
+[PublicAPI, JsonSourceGenerationOptions(GenerationMode = JsonSourceGenerationMode.Metadata, PropertyNamingPolicy = JsonKnownNamingPolicy.SnakeCaseLower)]
+public sealed partial class ModelsContext : JsonSerializerContext;
