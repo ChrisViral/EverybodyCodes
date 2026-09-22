@@ -19,6 +19,7 @@ public abstract class Day01 : Solver<string>
         public Part1(string input, ILogger logger) : base(input, logger) { }
 
         /// <inheritdoc />
+        /// ReSharper disable once CognitiveComplexity
         public override void Run()
         {
             int potions = this.Data.AsValueEnumerable().Sum(PotionsRequired);
@@ -36,6 +37,7 @@ public abstract class Day01 : Solver<string>
         public Part2(string input, ILogger logger) : base(input, logger) { }
 
         /// <inheritdoc />
+        /// ReSharper disable once CognitiveComplexity
         public override void Run()
         {
             int potions = 0;
@@ -59,6 +61,7 @@ public abstract class Day01 : Solver<string>
         public Part3(string input, ILogger logger) : base(input, logger) { }
 
         /// <inheritdoc />
+        /// ReSharper disable once CognitiveComplexity
         public override void Run()
         {
             int potions = 0;

@@ -54,6 +54,7 @@ public sealed class SolverResolver(ILogger<SolverResolver> logger, EverybodyCode
             return response.Correct
                        ? Result.Success()
                        : Result.Failure($"""
+                                         
                                          First character correct: {(response.FirstCorrect ? "yes" : "no")}
                                          Length correct: {(response.LengthCorrect ? "yes" : "no")}
                                          Cannot answer again for {response.PenaltyLeft.TotalSeconds:F0} seconds

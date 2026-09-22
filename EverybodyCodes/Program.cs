@@ -34,11 +34,10 @@ Log.Logger = configuration.WriteTo.Console()
                           .Enrich.FromLogContext()
 #if DEBUG
                           .MinimumLevel.Debug()
-                          .MinimumLevel.Override(typeof(HttpClient).FullName!, LogEventLevel.Information)
 #else
                           .MinimumLevel.Information()
-                          .MinimumLevel.Override(typeof(HttpClient).FullName!, LogEventLevel.Warning)
 #endif
+                          .MinimumLevel.Override(typeof(HttpClient).FullName!, LogEventLevel.Warning)
                           .CreateLogger();
 
 // Ensure input directory exists
