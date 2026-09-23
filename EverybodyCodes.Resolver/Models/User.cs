@@ -8,7 +8,7 @@ namespace EverybodyCodes.Resolver.Models;
 /// Everybody Codes User API object
 /// </summary>
 [PublicAPI]
-public class User
+public sealed class User
 {
     /// <summary>
     /// User ID

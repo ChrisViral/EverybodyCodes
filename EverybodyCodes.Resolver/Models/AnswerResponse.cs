@@ -8,7 +8,7 @@ namespace EverybodyCodes.Resolver.Models;
 /// Everybody Codes Answer API response
 /// </summary>
 [PublicAPI]
-public class AnswerResponse
+public sealed class AnswerResponse
 {
     /// <summary>
     /// If the answer is correct
