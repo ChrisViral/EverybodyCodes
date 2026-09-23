@@ -6,6 +6,9 @@
     <File Path=".editorconfig" />
     <File Path="README.md" />
   </Folder>
+  <Folder Name="/Workflows/">
+    <File Path=".github/workflows/dotnet-build.yml" />
+  </Folder>
   <Project Path="EverybodyCodes.Resolver/EverybodyCodes.Resolver.csproj" />
   <Project Path="EverybodyCodes/EverybodyCodes.csproj">
     <Platform Project="x64" />
