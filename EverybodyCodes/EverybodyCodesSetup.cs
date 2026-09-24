@@ -1,6 +1,7 @@
-﻿using System.Reflection;
+using System.Reflection;
 using System.Text.Json;
 using Challenge.CLI;
+using Challenge.Solvers;
 using Challenge.Utils.Extensions.Assemblies;
 using EverybodyCodes.Resolver;
 using EverybodyCodes.Resolver.Models;
@@ -36,7 +37,7 @@ public sealed class EverybodyCodesSetup() : Setup<EverybodyCodesResolverSettings
     public override void ConfigureServices(IServiceCollection services)
     {
         // Add services
-        services.AddSingleton<ISolverResolver, SolverResolver>()
+        services.AddSingleton<ISolverResolver, EverybodyCodesResolver>()
                 .AddSingleton(this.settings)
                 .AddLogging(builder => builder.AddSerilog(Log.Logger, true));
 
@@ -47,7 +48,7 @@ public sealed class EverybodyCodesSetup() : Setup<EverybodyCodesResolverSettings
 
         // Setup user agent value
         Version fileVersion = Assembly.GetExecutingAssembly().GetFileVersion;
-        string userAgent = $"ChrisViral.{typeof(SolverResolver).FullName}/{fileVersion.ToString(2)} (https://github.com/ChrisViral/EverybodyCodes)";
+        string userAgent = $"ChrisViral.{typeof(EverybodyCodesResolver).FullName}/{fileVersion.ToString(2)} (https://github.com/ChrisViral/EverybodyCodes)";
 
         // Add normal API client
         services.AddRefitClient<IEverybodyCodesAPI>(refitSettings)

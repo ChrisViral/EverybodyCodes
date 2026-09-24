@@ -9,7 +9,7 @@ using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
 using Refit;
 
-namespace EverybodyCodes.Resolver;
+namespace EverybodyCodes;
 
 /// <summary>
 /// Solver resolver and input fetcher
@@ -18,8 +18,8 @@ namespace EverybodyCodes.Resolver;
 /// <param name="settings">Resolver settings</param>
 /// <param name="api">Everybody Codes API</param>
 /// <param name="inputAPI">REverybody Codes Input API</param>
-[PublicAPI]
-public sealed class SolverResolver(ILogger<SolverResolver> logger, EverybodyCodesResolverSettings settings, IEverybodyCodesAPI api, IEverybodyCodesInputAPI inputAPI)
+[PublicAPI, SolverTable]
+public sealed partial class EverybodyCodesResolver(ILogger<EverybodyCodesResolver> logger, EverybodyCodesResolverSettings settings, IEverybodyCodesAPI api, IEverybodyCodesInputAPI inputAPI)
     : SolverResolverBase<EverybodyCodesResolverSettings>(logger, settings)
 {
     /// <inheritdoc />
