@@ -14,22 +14,22 @@ namespace EverybodyCodes;
 /// <summary>
 /// Everybody Codes program setup
 /// </summary>
-public sealed class EverybodyCodesSetup() : Setup<EverybodyCodesResolverSettings>("Everybody Codes")
+public sealed class EverybodyCodesSetup() : Setup<EverybodyCodesSettings>("Everybody Codes")
 {
     /// <inheritdoc />
     public override Task CreateDefaultSettings(FileStream fileStream, CancellationToken token)
     {
         return JsonSerializer.SerializeAsync(fileStream,
-                                             new EverybodyCodesResolverSettings(string.Empty, 0L, null),
-                                             EverybodyCodesResolverSettingsJsonContext.Default.EverybodyCodesResolverSettings,
+                                             new EverybodyCodesSettings(string.Empty, 0L, null),
+                                             EverybodyCodesSettingsJsonContext.Default.EverybodyCodesSettings,
                                              token);
     }
 
     /// <inheritdoc />
-    public override ValueTask<EverybodyCodesResolverSettings?> GetSettings(FileStream fileStream, CancellationToken token)
+    public override ValueTask<EverybodyCodesSettings?> GetSettings(FileStream fileStream, CancellationToken token)
     {
         return JsonSerializer.DeserializeAsync(fileStream,
-                                               EverybodyCodesResolverSettingsJsonContext.Default.EverybodyCodesResolverSettings,
+                                               EverybodyCodesSettingsJsonContext.Default.EverybodyCodesSettings,
                                                token);
     }
 

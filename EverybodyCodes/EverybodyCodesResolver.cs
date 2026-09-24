@@ -20,8 +20,8 @@ namespace EverybodyCodes;
 /// <param name="api">Everybody Codes API</param>
 /// <param name="inputAPI">REverybody Codes Input API</param>
 [PublicAPI, SolverTable]
-public sealed partial class EverybodyCodesResolver(ILogger<EverybodyCodesResolver> logger, EverybodyCodesResolverSettings settings, IEverybodyCodesAPI api, IEverybodyCodesInputAPI inputAPI)
-    : SolverResolverBase<EverybodyCodesResolverSettings>(logger, settings)
+public sealed partial class EverybodyCodesResolver(ILogger<EverybodyCodesResolver> logger, EverybodyCodesSettings settings, IEverybodyCodesAPI api, IEverybodyCodesInputAPI inputAPI)
+    : SolverResolverBase<EverybodyCodesSettings>(logger, settings)
 {
     /// <inheritdoc />
     public override string ChallengeName => "Everybody Codes";
@@ -30,7 +30,7 @@ public sealed partial class EverybodyCodesResolver(ILogger<EverybodyCodesResolve
     protected override TimeSpan RateLimit => TimeSpan.Zero;
 
     /// <inheritdoc />
-    protected override JsonTypeInfo<EverybodyCodesResolverSettings> SettingsTypeInfo => EverybodyCodesResolverSettingsJsonContext.Default.EverybodyCodesResolverSettings;
+    protected override JsonTypeInfo<EverybodyCodesSettings> SettingsTypeInfo => EverybodyCodesSettingsJsonContext.Default.EverybodyCodesSettings;
 
     /// <summary>
     /// Everybody Codes API

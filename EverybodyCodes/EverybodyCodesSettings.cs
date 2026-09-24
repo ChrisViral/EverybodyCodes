@@ -2,13 +2,13 @@
 using Challenge.CLI;
 using JetBrains.Annotations;
 
-namespace EverybodyCodes.API;
+namespace EverybodyCodes;
 
 /// <summary>
-/// <see cref="EverybodyCodesResolverSettings"/> JSON source generation context
+/// <see cref="EverybodyCodesSettings"/> JSON source generation context
 /// </summary>
-[PublicAPI, JsonSerializable(typeof(EverybodyCodesResolverSettings)), JsonSourceGenerationOptions(WriteIndented = true)]
-public sealed partial class EverybodyCodesResolverSettingsJsonContext : JsonSerializerContext;
+[PublicAPI, JsonSerializable(typeof(EverybodyCodesSettings)), JsonSourceGenerationOptions(WriteIndented = true)]
+public sealed partial class EverybodyCodesSettingsJsonContext : JsonSerializerContext;
 
 /// <summary>
 /// Everybody Codes resolver settings
@@ -18,7 +18,7 @@ public sealed partial class EverybodyCodesResolverSettingsJsonContext : JsonSeri
 /// <param name="Seed">Challenge seed</param>
 [PublicAPI]
 [method: JsonConstructor]
-public sealed record EverybodyCodesResolverSettings(string Cookie, long LastRequestTimestamp, uint? Seed) : ResolverSettings(Cookie, LastRequestTimestamp)
+public sealed record EverybodyCodesSettings(string Cookie, long LastRequestTimestamp, uint? Seed) : ResolverSettings(Cookie, LastRequestTimestamp)
 {
     /// <summary>
     /// Challenge seed
