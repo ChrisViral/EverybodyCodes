@@ -38,6 +38,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Challenge.Generator" Version="2026.9.575.1427" />
     <PackageReference Include="JetBrains.Annotations" Version="2026.2.0" />
     <PackageReference Include="JetBrains.ExternalAnnotations" Version="10.2.170" />
     <PackageReference Include="Refit" Version="16.1.0" />
@@ -49,9 +50,6 @@
   <ItemGroup>
     <ProjectReference Include="..\EverybodyCodes.API\EverybodyCodes.API.csproj" />
     <ProjectReference Include="..\Libraries\Challenge.CLI\Challenge.CLI.csproj" />
-    <ProjectReference Include="..\Libraries\Challenge.Generator\Challenge.Generator.csproj"
-                      OutputItemType="Analyzer"
-                      ReferenceOutputAssembly="false" />
   </ItemGroup>
 
   <ItemGroup>
