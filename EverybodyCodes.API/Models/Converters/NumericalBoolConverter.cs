@@ -1,7 +1,7 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace EverybodyCodes.Resolver.Models.Converters;
+namespace EverybodyCodes.API.Models.Converters;
 
 /// <summary>
 /// Numerical value (0/1) to <see cref="bool"/> converter

@@ -1,8 +1,8 @@
 ﻿using System.Text.Json.Serialization;
-using EverybodyCodes.Resolver.Models.Converters;
+using EverybodyCodes.API.Models.Converters;
 using JetBrains.Annotations;
 
-namespace EverybodyCodes.Resolver.Models;
+namespace EverybodyCodes.API.Models;
 
 /// <summary>
 /// Everybody Codes Answer API response

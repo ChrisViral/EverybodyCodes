@@ -1,7 +1,7 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace EverybodyCodes.Resolver.Models.Converters;
+namespace EverybodyCodes.API.Models.Converters;
 
 /// <summary>
 /// Converter treating empty strings as null values for <see cref="Uri"/>

@@ -1,8 +1,8 @@
-﻿using EverybodyCodes.Resolver.Models;
+﻿using EverybodyCodes.API.Models;
 using JetBrains.Annotations;
 using Refit;
 
-namespace EverybodyCodes.Resolver;
+namespace EverybodyCodes.API;
 
 /// <summary>
 /// Everybody Codes API

@@ -1,7 +1,7 @@
 ﻿using System.Text.Json.Serialization;
 using JetBrains.Annotations;
 
-namespace EverybodyCodes.Resolver.Models;
+namespace EverybodyCodes.API.Models;
 
 /// <summary>
 /// Global source generated json serialization context

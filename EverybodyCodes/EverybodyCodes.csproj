@@ -47,7 +47,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\EverybodyCodes.Resolver\EverybodyCodes.Resolver.csproj" />
+    <ProjectReference Include="..\EverybodyCodes.API\EverybodyCodes.API.csproj" />
     <ProjectReference Include="..\Libraries\Challenge.CLI\Challenge.CLI.csproj" />
     <ProjectReference Include="..\Libraries\Challenge.Generator\Challenge.Generator.csproj"
                       OutputItemType="Analyzer"

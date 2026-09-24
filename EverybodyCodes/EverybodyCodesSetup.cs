@@ -1,10 +1,10 @@
-using System.Reflection;
+﻿using System.Reflection;
 using System.Text.Json;
 using Challenge.CLI;
 using Challenge.Solvers;
 using Challenge.Utils.Extensions.Assemblies;
-using EverybodyCodes.Resolver;
-using EverybodyCodes.Resolver.Models;
+using EverybodyCodes.API;
+using EverybodyCodes.API.Models;
 using Microsoft.Extensions.DependencyInjection;
 using Refit;
 using Serilog;

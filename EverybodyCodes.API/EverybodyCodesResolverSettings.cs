@@ -2,7 +2,7 @@
 using Challenge.CLI;
 using JetBrains.Annotations;
 
-namespace EverybodyCodes.Resolver;
+namespace EverybodyCodes.API;
 
 /// <summary>
 /// <see cref="EverybodyCodesResolverSettings"/> JSON source generation context

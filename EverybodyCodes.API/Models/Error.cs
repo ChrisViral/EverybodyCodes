@@ -1,6 +1,6 @@
 ﻿using JetBrains.Annotations;
 
-namespace EverybodyCodes.Resolver.Models;
+namespace EverybodyCodes.API.Models;
 
 /// <summary>
 /// Error message response
