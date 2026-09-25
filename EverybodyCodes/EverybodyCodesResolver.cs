@@ -23,11 +23,13 @@ namespace EverybodyCodes;
 public sealed partial class EverybodyCodesResolver(ILogger<EverybodyCodesResolver> logger, EverybodyCodesSettings settings, IEverybodyCodesAPI api, IEverybodyCodesInputAPI inputAPI)
     : SolverResolverBase<EverybodyCodesSettings>(logger, settings)
 {
+    private readonly Dictionary<(uint year, uint day), (Inputs inputs, Quest quest)> inputsCache = new();
+
     /// <inheritdoc />
     public override string ChallengeName => "Everybody Codes";
 
     /// <inheritdoc />
-    protected override TimeSpan RateLimit => TimeSpan.Zero;
+    protected override TimeSpan RateLimit => TimeSpan.FromSeconds(120L);
 
     /// <inheritdoc />
     protected override JsonTypeInfo<EverybodyCodesSettings> SettingsTypeInfo => EverybodyCodesSettingsJsonContext.Default.EverybodyCodesSettings;
@@ -85,24 +87,28 @@ public sealed partial class EverybodyCodesResolver(ILogger<EverybodyCodesResolve
     }
 
     /// <inheritdoc />
-    /// <exception cref="InvalidOperationException">If the <paramref name="data"/> does not have a valid value for the <see cref="SolverData.Part"/></exception>
-    protected override async Task<string> GetInputFromAPI(SolverData data, CancellationToken token)
+    protected override async Task<Result<string>> GetInputFromAPI(SolverData data, CancellationToken token)
     {
-        if (!data.Part.HasValue) throw new InvalidOperationException("Part required to get input from API");
+        if (!data.Part.HasValue) return Result.Failure<string>("Part required to get input from API");
 
-        // Get seed and inputs
+        // Get seed
         uint seed = await GetSeed(token).ConfigureAwait(false);
+
+        // Get input and quest from API
         Inputs inputs = await this.InputAPI.GetInputs(data.Year, data.Day, seed, token).ConfigureAwait(false);
-        string input = inputs.GetInput(data.Part.Value);
+        Quest quest   = await this.API.GetQuest(data.Year, data.Day, token).ConfigureAwait(false);
+        this.inputsCache[(data.Year, data.Day)] = (inputs, quest);
 
-        // Get quest data and decryption key
-        Quest quest = await this.API.GetQuest(data.Year, data.Day, token).ConfigureAwait(false);
-        string? key = quest.GetKey(data.Part.Value);
+        // Decrypt data and return
+        return DecryptInput(data, inputs, quest);
+    }
 
-        // Decrypt part input
-        return !string.IsNullOrEmpty(key)
-                   ? DecryptInput(input, key)
-                   : throw new InvalidOperationException("Input decryption key not obtained yet");
+    /// <inheritdoc />
+    protected override Result<string> GetCachedInput(SolverData data)
+    {
+        return this.inputsCache.TryGetValue((data.Year, data.Day), out (Inputs inputs, Quest quest) cachedData)
+                   ? DecryptInput(data, cachedData.inputs, cachedData.quest)
+                   : Result.Failure<string>("Inputs or quest not found in cache");
     }
 
     /// <summary>
@@ -124,11 +130,17 @@ public sealed partial class EverybodyCodesResolver(ILogger<EverybodyCodesResolve
     /// <summary>
     /// Decrypts the input
     /// </summary>
-    /// <param name="encrypted">Encrypted input</param>
-    /// <param name="key">AES decryption key</param>
-    /// <returns>The decrypted input</returns>
-    private static string DecryptInput(string encrypted, string key)
+    /// <param name="data">Solver data</param>
+    /// <param name="inputs">Solver inputs</param>
+    /// <param name="quest">Solver quest</param>
+    /// <returns>The decrypted input, if successful</returns>
+    private static Result<string> DecryptInput(SolverData data, Inputs inputs, Quest quest)
     {
+        // Get encrypted data and key
+        string encrypted = inputs.GetInput(data.Part!.Value);
+        string? key = quest.GetKey(data.Part.Value);
+        if (string.IsNullOrEmpty(key)) return Result.Failure<string>("Input decryption key not obtained yet");
+
         // Get encrypted bytes
         int encryptedLength = encrypted.Length / 2;
         Span<byte> encryptedBytes = stackalloc byte[encryptedLength];
