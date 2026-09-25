@@ -7,12 +7,10 @@ namespace EverybodyCodes.EC2024;
 /// Solver for 2024 Day 1
 /// </summary>
 [Solver(2024, 1)]
-public sealed partial class Day01 : Solver<string>
+public sealed partial class Day01 : Solver<string>, IEverybodyCodesSolver
 {
-    /// <summary>
-    /// Runs the solver's Part 1
-    /// </summary>
-    /// ReSharper disable once CognitiveComplexity
+    // ReSharper disable CognitiveComplexity
+    /// <inheritdoc />
     [Part(1)]
     public void RunPart1()
     {
@@ -20,10 +18,7 @@ public sealed partial class Day01 : Solver<string>
         LogAnswer(potions);
     }
 
-    /// <summary>
-    /// Runs the solver's Part 2
-    /// </summary>
-    /// ReSharper disable once CognitiveComplexity
+    /// <inheritdoc />
     [Part(2)]
     public void RunPart2()
     {
@@ -37,10 +32,7 @@ public sealed partial class Day01 : Solver<string>
         LogAnswer(potions);
     }
 
-    /// <summary>
-    /// Runs the solver's Part 3
-    /// </summary>
-    /// ReSharper disable once CognitiveComplexity
+    /// <inheritdoc />
     [Part(3)]
     public void RunPart3()
     {
@@ -53,6 +45,7 @@ public sealed partial class Day01 : Solver<string>
         }
         LogAnswer(potions);
     }
+    // ReSharper enable CognitiveComplexity
 
     private static int PotionsRequired(char enemy) => enemy switch
     {

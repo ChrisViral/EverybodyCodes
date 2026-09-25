@@ -14,11 +14,10 @@ namespace EverybodyCodes.EC2024;
 /// </summary>
 /// ReSharper disable CognitiveComplexity
 [Solver(2024, 2)]
-public sealed partial class Day02 : Solver<(string[] words, string[] inscriptions)>
+public sealed partial class Day02 : Solver<(string[] words, string[] inscriptions)>, IEverybodyCodesSolver
 {
-    /// <summary>
-    /// Runs part 1 of the solver
-    /// </summary>
+    // ReSharper disable CognitiveComplexity
+    /// <inheritdoc />
     [Part(1)]
     public void RunPart1()
     {
@@ -26,9 +25,7 @@ public sealed partial class Day02 : Solver<(string[] words, string[] inscription
         LogAnswer(count);
     }
 
-    /// <summary>
-    /// Runs part 2 of the solver
-    /// </summary>
+    /// <inheritdoc />
     [Part(2)]
     public void RunPart2()
     {
@@ -63,9 +60,7 @@ public sealed partial class Day02 : Solver<(string[] words, string[] inscription
         LogAnswer(count);
     }
 
-    /// <summary>
-    /// Runs part 3 of the solver
-    /// </summary>
+    /// <inheritdoc />
     [Part(3)]
     public void RunPart3()
     {
@@ -85,6 +80,7 @@ public sealed partial class Day02 : Solver<(string[] words, string[] inscription
         }
         LogAnswer(scales.Count);
     }
+    // ReSharper enable CognitiveComplexity
 
     private void MarkSymbolsFromPosition(Vector2<int> position, Direction direction, Grid<char> armour, HashSet<Vector2<int>> scales)
     {
