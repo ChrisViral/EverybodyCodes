@@ -1,6 +1,6 @@
-using EverybodyCodes;
+using EverybodyCodes.Resolver;
 
-using EverybodyCodesSetup setup = new();
-if (!await setup.TrySetup()) return 1;
+using EverybodyCodesSetup solverSetup = new();
+if (!await solverSetup.TrySetup()) return 1;
 
-return await setup.RunProgram(args);
+return await solverSetup.RunProgram(args);

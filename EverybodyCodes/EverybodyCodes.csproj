@@ -41,10 +41,9 @@
     <PackageReference Include="Challenge.Generator" Version="2026.9.582.361" />
     <PackageReference Include="JetBrains.Annotations" Version="2026.2.0" />
     <PackageReference Include="JetBrains.ExternalAnnotations" Version="10.2.170" />
-    <PackageReference Include="Refit" Version="16.1.0" />
-    <PackageReference Include="Refit.HttpClientFactory" Version="16.1.0" />
-    <PackageReference Include="Refit.Reflection" Version="16.1.0" />
-    <PackageReference Include="Serilog.Extensions.Logging" Version="10.0.0" />
+    <PackageReference Include="Refit" Version="16.3.0" />
+    <PackageReference Include="Refit.HttpClientFactory" Version="16.3.0" />
+    <PackageReference Include="Refit.Reflection" Version="16.3.0" />
   </ItemGroup>
 
   <ItemGroup>

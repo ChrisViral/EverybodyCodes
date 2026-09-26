@@ -1,6 +1,5 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
-using System.Text.Json.Serialization.Metadata;
 using Challenge.CLI;
 using Challenge.Solvers;
 using CSharpFunctionalExtensions;
@@ -10,7 +9,7 @@ using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
 using Refit;
 
-namespace EverybodyCodes;
+namespace EverybodyCodes.Resolver;
 
 /// <summary>
 /// Solver resolver and input fetcher
@@ -30,9 +29,6 @@ public sealed partial class EverybodyCodesResolver(ILogger<EverybodyCodesResolve
 
     /// <inheritdoc />
     protected override TimeSpan RateLimit => TimeSpan.FromSeconds(120L);
-
-    /// <inheritdoc />
-    protected override JsonTypeInfo<EverybodyCodesSettings> SettingsTypeInfo => EverybodyCodesSettingsJsonContext.Default.EverybodyCodesSettings;
 
     /// <summary>
     /// Everybody Codes API
@@ -122,7 +118,7 @@ public sealed partial class EverybodyCodesResolver(ILogger<EverybodyCodesResolve
 
         // Get seed value and save to settings
         User user = await this.API.GetUser(token).ConfigureAwait(false);
-        this.Settings.Seed = user.Seed;
+        this.Settings = this.Settings with { Seed = user.Seed };
         await SaveSettings(token).ConfigureAwait(false);
         return user.Seed;
     }
