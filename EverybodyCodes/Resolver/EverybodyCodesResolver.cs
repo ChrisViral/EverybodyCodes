@@ -20,12 +20,14 @@ namespace EverybodyCodes.Resolver;
 /// <param name="inputAPI">REverybody Codes Input API</param>
 [PublicAPI, SolverTable]
 public sealed partial class EverybodyCodesResolver(ILogger<EverybodyCodesResolver> logger, EverybodyCodesSettings settings, IEverybodyCodesAPI api, IEverybodyCodesInputAPI inputAPI)
-    : SolverResolverBase<EverybodyCodesSettings>(logger, settings)
+    : SolverResolver<EverybodyCodesSettings>(logger, settings)
 {
+    public const string CHALLENGE_NAME = "Everybody Codes";
+
     private readonly Dictionary<(uint year, uint day), (Inputs inputs, Quest quest)> inputsCache = new();
 
     /// <inheritdoc />
-    public override string ChallengeName => "Everybody Codes";
+    public override string ChallengeName => CHALLENGE_NAME;
 
     /// <inheritdoc />
     protected override TimeSpan RateLimit => TimeSpan.FromSeconds(120L);

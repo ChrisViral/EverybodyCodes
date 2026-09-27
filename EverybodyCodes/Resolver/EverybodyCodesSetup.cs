@@ -13,7 +13,7 @@ namespace EverybodyCodes.Resolver;
 /// Everybody Codes program setup
 /// </summary>
 public sealed class EverybodyCodesSetup()
-    : SolverSetup<EverybodyCodesSettings, EverybodyCodesResolver>("Everybody Codes")
+    : SolverSetup<EverybodyCodesSettings, EverybodyCodesResolver>(EverybodyCodesResolver.CHALLENGE_NAME)
 {
     /// <inheritdoc />
     public override void ConfigureServices(IServiceCollection services)
