@@ -16,7 +16,7 @@ public sealed class EverybodyCodesSetup()
     : SolverSetup<EverybodyCodesSettings, EverybodyCodesResolver>(EverybodyCodesResolver.CHALLENGE_NAME)
 {
     /// <inheritdoc />
-    public override void ConfigureServices(IServiceCollection services)
+    public override void ConfigureAPIClients(IServiceCollection services)
     {
         // Create refit settings
         JsonSerializerOptions options = SystemTextJsonContentSerializer.GetDefaultJsonSerializerOptions();
@@ -26,6 +26,7 @@ public sealed class EverybodyCodesSetup()
         // Setup user agent value
         Version fileVersion = Assembly.GetExecutingAssembly().GetFileVersion;
         string userAgent = $"ChrisViral.{typeof(EverybodyCodesResolver).FullName}/{fileVersion.ToString(2)} (https://github.com/ChrisViral/EverybodyCodes)";
+        string cookie = $"everybody-codes={this.settings.Cookie}";
 
         // Add normal API client
         services.AddRefitClient<IEverybodyCodesAPI>(refitSettings)
@@ -33,7 +34,7 @@ public sealed class EverybodyCodesSetup()
                  {
                      // Set address and headers
                      client.BaseAddress = new Uri("https://api.everybody.codes");
-                     client.DefaultRequestHeaders.Add("cookie", $"everybody-codes={this.settings.Cookie}");
+                     client.DefaultRequestHeaders.Add("cookie", cookie);
                      client.DefaultRequestHeaders.UserAgent.ParseAdd(userAgent);
                  });
 
@@ -43,7 +44,7 @@ public sealed class EverybodyCodesSetup()
                  {
                      // Set address and headers
                      client.BaseAddress = new Uri("https://everybody.codes");
-                     client.DefaultRequestHeaders.Add("cookie", $"everybody-codes={this.settings.Cookie}");
+                     client.DefaultRequestHeaders.Add("cookie", cookie);
                      client.DefaultRequestHeaders.UserAgent.ParseAdd(userAgent);
                  });
     }
