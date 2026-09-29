@@ -102,11 +102,15 @@ public sealed partial class EverybodyCodesResolver(ILogger<EverybodyCodesResolve
     }
 
     /// <inheritdoc />
-    protected override Result<string> GetCachedInput(SolverData data)
+    protected override Result<string, CacheFetchError> GetCachedInput(SolverData data)
     {
-        return this.inputsCache.TryGetValue((data.Year, data.Day), out (Inputs inputs, Quest quest) cachedData)
-                   ? DecryptInput(data, cachedData.inputs, cachedData.quest)
-                   : Result.Failure<string>("Inputs or quest not found in cache");
+        if (!this.inputsCache.TryGetValue((data.Year, data.Day), out (Inputs inputs, Quest quest) cachedData))
+        {
+            return Result.Failure<string, CacheFetchError>(CacheFetchError.NotFound);
+        }
+
+        Result<string> result = DecryptInput(data, cachedData.inputs, cachedData.quest);
+        return Result.SuccessIf(result.IsSuccess, result.GetValueOrDefault(), CacheFetchError.Unavailable);
     }
 
     /// <summary>
