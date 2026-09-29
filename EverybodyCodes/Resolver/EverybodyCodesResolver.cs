@@ -30,7 +30,7 @@ public sealed partial class EverybodyCodesResolver(ILogger<EverybodyCodesResolve
     public override string ChallengeName => CHALLENGE_NAME;
 
     /// <inheritdoc />
-    protected override TimeSpan RateLimit => TimeSpan.FromSeconds(120L);
+    protected override TimeSpan RateLimit => TimeSpan.FromSeconds(60L);
 
     /// <summary>
     /// Everybody Codes API
