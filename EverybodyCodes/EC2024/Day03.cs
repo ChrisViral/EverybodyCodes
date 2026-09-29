@@ -35,12 +35,12 @@ public sealed partial class Day03 : GridSolver<bool>, IEverybodyCodesSolver
     [Part(3)]
     public void RunPart3()
     {
-        int removed = GetRemovedCount(withDiagonals: true);
+        int removed = GetRemovedCount(options: AdjacentOptions.WITH_DIAGONALS);
         LogAnswer(removed);
     }
     // ReSharper enable CognitiveComplexity
 
-    private int GetRemovedCount(bool withDiagonals = false)
+    private int GetRemovedCount(AdjacentOptions options = AdjacentOptions.CARDINAL_ONLY)
     {
         HashSet<Vector2<int>> remaining = new(this.Grid.Size);
         foreach (Vector2<int> position in this.Grid.Dimensions.Enumerate())
@@ -56,7 +56,7 @@ public sealed partial class Day03 : GridSolver<bool>, IEverybodyCodesSolver
         while (!remaining.IsEmpty)
         {
             removed += remaining.Count;
-            toRemove.AddRange(remaining.Where(p => p.Adjacent(withDiagonals: withDiagonals)
+            toRemove.AddRange(remaining.Where(p => p.Adjacent(options)
                                                     .Any(a => !this.Grid.TryGetPosition(a, out bool isFilled) || !isFilled)));
             remaining.ExceptWith(toRemove);
             toRemove.ForEach(p => this.Grid[p] = false);
