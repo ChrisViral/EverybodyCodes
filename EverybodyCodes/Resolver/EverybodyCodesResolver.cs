@@ -106,11 +106,11 @@ public sealed partial class EverybodyCodesResolver(ILogger<EverybodyCodesResolve
     {
         if (!this.inputsCache.TryGetValue((data.Year, data.Day), out (Inputs inputs, Quest quest) cachedData))
         {
-            return Result.Failure<string, CacheFetchError>(CacheFetchError.NotFound);
+            return Result.Failure<string, CacheFetchError>(CacheFetchError.NOT_FOUND);
         }
 
         Result<string> result = DecryptInput(data, cachedData.inputs, cachedData.quest);
-        return Result.SuccessIf(result.IsSuccess, result.GetValueOrDefault(), CacheFetchError.Unavailable);
+        return Result.SuccessIf(result.IsSuccess, result.GetValueOrDefault(), CacheFetchError.UNAVAILABLE);
     }
 
     /// <summary>

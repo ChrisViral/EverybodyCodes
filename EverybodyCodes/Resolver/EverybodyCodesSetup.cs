@@ -25,7 +25,7 @@ public sealed class EverybodyCodesSetup()
 
         // Setup user agent value
         Version fileVersion = Assembly.GetExecutingAssembly().GetFileVersion;
-        string userAgent = $"ChrisViral.{typeof(EverybodyCodesResolver).FullName}/{fileVersion.ToString(2)} (https://github.com/ChrisViral/EverybodyCodes)";
+        string userAgent = $"ChrisViral.{nameof(EverybodyCodesResolver)}/{fileVersion.ToString(2)} (https://github.com/ChrisViral/EverybodyCodes)";
         string cookie = $"everybody-codes={this.settings.Cookie}";
 
         // Add normal API client
