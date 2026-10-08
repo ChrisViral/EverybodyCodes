@@ -119,7 +119,7 @@ public sealed partial class Day15 : GridSolver<char>, IEverybodyCodesSolver
         // Calculate pathes between all points of interest
         Dictionary<Vector2<int>, Dictionary<Vector2<int>, int>> distanceCaches = new(100);
         Dictionary<UnorderedPair<Vector2<int>>, int> distances = new(1000);
-        foreach (UnorderedPair<Vector2<int>> pair in pointsOfInterst.EnumeratePairs().Where(p => this.Data[p.first] != this.Data[p.second]))
+        foreach (UnorderedPair<Vector2<int>> pair in pointsOfInterst.EnumeratePairs().Where(p => this.Data[p.First] != this.Data[p.Second]))
         {
             if (!distanceCaches.TryGetValue(pair.Second, out Dictionary<Vector2<int>, int>? cache))
             {
