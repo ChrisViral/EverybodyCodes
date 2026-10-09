@@ -13,7 +13,7 @@ namespace EverybodyCodes.EC2024;
 /// Solver for 2024 Day 18
 /// </summary>
 [Solver(2024, 18)]
-public sealed partial class Day18 : Solver<(Grid<Day18.Element> map, HashSet<Vector2<int>> palms)>, IEverybodyCodesSolver
+public sealed partial class Day18 : Solver<(Grid<Day18.Element> Map, HashSet<Vector2<int>> Palms)>, IEverybodyCodesSolver
 {
     [UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
     public enum Element
@@ -29,13 +29,13 @@ public sealed partial class Day18 : Solver<(Grid<Day18.Element> map, HashSet<Vec
     [Part(1)]
     public void RunPart1()
     {
-        Vector2<int> start = this.Data.map.Dimensions.Enumerate()
-                                 .Where(p => this.Data.map[p] is Element.EMPTY)
+        Vector2<int> start = this.Data.Map.Dimensions.Enumerate()
+                                 .Where(p => this.Data.Map[p] is Element.EMPTY)
                                  .First(p => p is { X: 0 } or { Y: 0 }
-                                          || p.X == this.Data.map.Width - 1
-                                          || p.Y == this.Data.map.Height - 1);
+                                          || p.X == this.Data.Map.Width - 1
+                                          || p.Y == this.Data.Map.Height - 1);
 
-        (int time, _) = GetFloodTime(this.Data.map, this.Data.palms, start);
+        (int time, _) = GetFloodTime(this.Data.Map, this.Data.Palms, start);
         LogAnswer(time);
     }
 
@@ -43,14 +43,14 @@ public sealed partial class Day18 : Solver<(Grid<Day18.Element> map, HashSet<Vec
     [Part(2)]
     public void RunPart2()
     {
-        Vector2<int>[] startPoints = this.Data.map.Dimensions.Enumerate()
-                                         .Where(p => this.Data.map[p] is Element.EMPTY)
+        Vector2<int>[] startPoints = this.Data.Map.Dimensions.Enumerate()
+                                         .Where(p => this.Data.Map[p] is Element.EMPTY)
                                          .Where(p => p is { X: 0 } or { Y: 0 }
-                                                  || p.X == this.Data.map.Width - 1
-                                                  || p.Y == this.Data.map.Height - 1)
+                                                  || p.X == this.Data.Map.Width - 1
+                                                  || p.Y == this.Data.Map.Height - 1)
                                          .ToArray();
 
-        (int time, _) = GetFloodTime(this.Data.map, this.Data.palms, startPoints);
+        (int time, _) = GetFloodTime(this.Data.Map, this.Data.Palms, startPoints);
         LogAnswer(time);
     }
 
@@ -60,12 +60,12 @@ public sealed partial class Day18 : Solver<(Grid<Day18.Element> map, HashSet<Vec
     {
         // Flood filling in reverse from the trees would be faster, but this runs in ~3s and I can't really be assed to rewrite it
         int minTime = int.MaxValue;
-        Grid<Element> map = new(this.Data.map.Width, this.Data.map.Height);
+        Grid<Element> map = new(this.Data.Map.Width, this.Data.Map.Height);
         HashSet<Vector2<int>> palms = [];
-        foreach (Vector2<int> start in map.Dimensions.Enumerate().Where(p => this.Data.map[p] is Element.EMPTY && !this.Data.palms.Contains(p)).ToArray())
+        foreach (Vector2<int> start in map.Dimensions.Enumerate().Where(p => this.Data.Map[p] is Element.EMPTY && !this.Data.Palms.Contains(p)).ToArray())
         {
-            map.CopyFrom(this.Data.map);
-            palms.UnionWith(this.Data.palms);
+            map.CopyFrom(this.Data.Map);
+            palms.UnionWith(this.Data.Palms);
             (_, int time) = GetFloodTime(map, palms, start);
             minTime       = Math.Min(minTime, time);
         }
@@ -109,7 +109,7 @@ public sealed partial class Day18 : Solver<(Grid<Day18.Element> map, HashSet<Vec
     }
 
     /// <inheritdoc />
-    protected override (Grid<Element> map, HashSet<Vector2<int>> palms) Convert(string[] rawInput)
+    protected override (Grid<Element>, HashSet<Vector2<int>>) Convert(string[] rawInput)
     {
         int width  = rawInput[0].Length;
         int height = rawInput.Length;

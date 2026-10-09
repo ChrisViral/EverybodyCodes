@@ -14,14 +14,14 @@ namespace EverybodyCodes.EC2024;
 /// </summary>
 /// ReSharper disable CognitiveComplexity
 [Solver(2024, 2)]
-public sealed partial class Day02 : Solver<(string[] words, string[] inscriptions)>, IEverybodyCodesSolver
+public sealed partial class Day02 : Solver<(string[] Words, string[] Inscriptions)>, IEverybodyCodesSolver
 {
     // ReSharper disable CognitiveComplexity
     /// <inheritdoc />
     [Part(1)]
     public void RunPart1()
     {
-        int count = this.Data.words.AsSpan().Sum(w => this.Data.inscriptions[0].AsSpan().Count(w));
+        int count = this.Data.Words.AsSpan().Sum(w => this.Data.Inscriptions[0].AsSpan().Count(w));
         LogAnswer(count);
     }
 
@@ -31,10 +31,10 @@ public sealed partial class Day02 : Solver<(string[] words, string[] inscription
     {
         int count = 0;
         HashSet<int> symbols = new(100);
-        foreach (ReadOnlySpan<char> inscription in this.Data.inscriptions)
+        foreach (ReadOnlySpan<char> inscription in this.Data.Inscriptions)
         {
             inscription.Reversed(out ReadOnlySpan<char> reversedInscription);
-            foreach (string word in this.Data.words)
+            foreach (string word in this.Data.Words)
             {
                 foreach (ValueMatch match in Regex.EnumerateMatches(inscription, word))
                 {
@@ -64,9 +64,9 @@ public sealed partial class Day02 : Solver<(string[] words, string[] inscription
     [Part(3)]
     public void RunPart3()
     {
-        int width = this.Data.inscriptions[0].Length;
-        int height = this.Data.inscriptions.Length;
-        Grid<char> armour = new(width, height, this.Data.inscriptions, s => s.ToCharArray());
+        int width = this.Data.Inscriptions[0].Length;
+        int height = this.Data.Inscriptions.Length;
+        Grid<char> armour = new(width, height, this.Data.Inscriptions, s => s.ToCharArray());
 
         HashSet<Vector2<int>> scales = new(armour.Size);
         foreach (int row in ..height)
@@ -87,7 +87,7 @@ public sealed partial class Day02 : Solver<(string[] words, string[] inscription
         using Pooled<List<Vector2<int>>> matches = ListObjectPool<Vector2<int>>.Shared.Get();
         do
         {
-            foreach (string word in this.Data.words)
+            foreach (string word in this.Data.Words)
             {
                 if (TryMatchWord(position, word, armour, direction, matches.Ref))
                 {
