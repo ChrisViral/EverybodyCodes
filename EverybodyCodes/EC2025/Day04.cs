@@ -58,7 +58,7 @@ public sealed partial class Day04 : RegexSolver<Day04.Gear>, IEverybodyCodesSolv
     }
     // ReSharper enable CognitiveComplexity
 
-    public Fraction<long> GetFullRatio() => this.Data.Pairwise()
-                                                .Select(p => new Fraction<long>(p.Second.Inner, p.First.Outer))
-                                                .Aggregate(Fraction<long>.MultiplyReduced);
+    private Fraction<long> GetFullRatio() => this.Data.Pairwise()
+                                                 .Select(p => new Fraction<long>(p.Second.Inner, p.First.Outer))
+                                                 .Aggregate(Fraction<long>.MultiplyReduced);
 }
