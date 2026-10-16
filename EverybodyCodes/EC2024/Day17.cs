@@ -66,7 +66,7 @@ public sealed partial class Day17 : Solver<ImmutableArray<Vector2<int>>>, IEvery
 
     private DefaultDictionary<Vector2<int>, Constellation> GetConstellations(int maxLinkDistance = int.MaxValue)
     {
-        DefaultDictionary<Vector2<int>, Constellation> constellations = new(this.Data.Length, () => new Constellation());
+        DefaultDictionary<Vector2<int>, Constellation> constellations = new(this.Data.Length, _ => new Constellation());
         foreach (DistancePair pair in this.Data.EnumeratePairs()
                                           .Select(p => new DistancePair(p.First, p.Second))
                                           .Where(p => p.Distance <= maxLinkDistance)

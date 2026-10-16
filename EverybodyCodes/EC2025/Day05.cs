@@ -17,7 +17,7 @@ namespace EverybodyCodes.EC2025;
 [Solver(2025, 5)]
 public sealed partial class Day05 : ArraySolver<Day05.Sword>, IEverybodyCodesSolver
 {
-    public class Sword(int id, ImmutableArray<int> values) : IComparable<Sword>
+    public sealed class Sword(int id, ImmutableArray<int> values) : IComparable<Sword>
     {
         public int ID { get; } = id;
 

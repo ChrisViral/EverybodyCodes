@@ -58,7 +58,7 @@ public sealed partial class Day06 : Solver<string>, IEverybodyCodesSolver
 
     private static DefaultDictionary<char, int[]> GetPopulationMap(string data)
     {
-        DefaultDictionary<char, int[]> frequenciesMap = new(() => new int[data.Length]);
+        DefaultDictionary<char, int[]> frequenciesMap = new(_ => new int[data.Length]);
         foreach (int i in ..data.Length)
         {
             char value = data[i];

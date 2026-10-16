@@ -51,10 +51,10 @@ public sealed partial class Day08 : Solver<ImmutableArray<int>>, IEverybodyCodes
     {
         if (lines.First == lines.Second) return true;
 
-        (int start, int end) = lines.First;
-        (int a, int b)       = lines.Second;
-        if (a == start || a == end || b == start || b == end) return false;
+        (int a, int b) = lines.Second;
+        if (lines.First.HasValue(a) || lines.First.HasValue(b)) return false;
 
+        (int start, int end) = lines.First;
         Range lineRange = start..^end;
         return lineRange.IsInRange(a) ^ lineRange.IsInRange(b);
     }
