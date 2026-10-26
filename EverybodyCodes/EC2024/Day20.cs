@@ -1,4 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
+using Challenge.Maths.Directions;
 using Challenge.Maths.Vectors;
 using Challenge.Solvers;
 using Challenge.Solvers.Specialized;
